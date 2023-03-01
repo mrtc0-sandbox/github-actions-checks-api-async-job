@@ -1,14 +1,21 @@
 name: deploy
 on:
   push:
-    branches: ['master']
+    branches: ['master', 'develop']
 
 jobs:
   deploy:
     runs-on: ubuntu-latest
     steps:
     - uses: LouisBrunner/checks-action@69aaabbcf32668b60dc03b65deabfe23e92d9c41
+      if: github.ref == 'refs/heads/develop'
       with:
         token: ${{ secrets.GITHUB_TOKEN }}
-        name: async-job-test
+        name: async-job-test-develop
+        status: queued
+    - uses: LouisBrunner/checks-action@69aaabbcf32668b60dc03b65deabfe23e92d9c41
+      if: github.ref == 'refs/heads/master'
+      with:
+        token: ${{ secrets.GITHUB_TOKEN }}
+        name: async-job-test-master
         status: queued
