@@ -1,0 +1,14 @@
+name: deploy
+on:
+  push:
+    branches: ['master']
+
+jobs:
+  deploy:
+    runs-on: ubuntu-latest
+    steps:
+    - uses: LouisBrunner/checks-action@69aaabbcf32668b60dc03b65deabfe23e92d9c41
+      with:
+        token: ${{ secrets.GITHUB_TOKEN }}
+        name: test
+        status: queued

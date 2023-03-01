@@ -1,0 +1,33 @@
+name: async job
+on:
+  workflow_dispatch:
+
+jobs:
+  test:
+    runs-on: ubuntu-latest
+    steps:
+    - name: Run Async Job
+      run: |
+        sleep 10
+    - name: Get latest Checks
+      uses: actions/github-script@v2
+      id: get-test-check-runs-id
+      with:
+        script: |
+          const list = await github.checks.listForRef({
+                  owner: context.repo.owner,
+                  repo: context.repo.repo,
+                  ref: 'master',
+                  check_name: 'test',
+                  filter: 'latest'
+              });
+          return list.data.check_runs[0].id;
+        result-encoding: string
+    - uses: LouisBrunner/checks-action@69aaabbcf32668b60dc03b65deabfe23e92d9c41
+      with:
+        token: ${{ secrets.GITHUB_TOKEN }}
+        name: test
+        check_id: ${{steps.get-test-check-runs-id.outputs.result}}
+        status: completed
+        conclusion: ${{ (github.event.action == 'success' && 'success' ) || 'failure'  }}
+
