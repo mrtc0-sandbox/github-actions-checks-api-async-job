@@ -14,7 +14,7 @@ jobs:
       id: get-test-check-runs-id
       with:
         script: |
-          const list = await github.checks.listForRef({
+          const list = await github.rest.checks.listForRef({
                   owner: context.repo.owner,
                   repo: context.repo.repo,
                   ref: 'master',
