@@ -18,7 +18,7 @@ jobs:
                   owner: context.repo.owner,
                   repo: context.repo.repo,
                   ref: 'master',
-                  check_name: 'test',
+                  check_name: 'async-job-test',
                   filter: 'latest'
               });
           console.log(list.data.check_runs)
