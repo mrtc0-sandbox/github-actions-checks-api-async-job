@@ -21,12 +21,13 @@ jobs:
                   check_name: 'test',
                   filter: 'latest'
               });
+          console.log(list.data.check_runs)
           return list.data.check_runs[0].id;
         result-encoding: string
     - uses: LouisBrunner/checks-action@69aaabbcf32668b60dc03b65deabfe23e92d9c41
+      if: always()
       with:
         token: ${{ secrets.GITHUB_TOKEN }}
         check_id: ${{steps.get-test-check-runs-id.outputs.result}}
         status: completed
         conclusion: ${{ (github.event.action == 'success' && 'success' ) || 'failure'  }}
-
